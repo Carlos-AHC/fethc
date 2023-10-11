@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        fetch('colombia.json')
+        .then(response=>
+            response.json()) //puedo poner .text() si lo quiero traer a texto y .json() siquiero que me guarde en json       
+        .then(ami => {
+            console.log(ami)
+            let resultado=ami.find((element)=> element.departamento=="Antioquia")//esta es una funcion de js que me recorrio el json al que le puse ami, lo recorri con el nombre de element, cunado el elemento q¿este en departamento y sea antioquia, me va mostrar en console.log todo lo de antioquia
+            console.log(resultado)
+            let municipios = resultado.ciudades; //aca es mas simple. reultado ya esta en antioquia entonces le dije que de resultado me mostrata el array de ciudades
+            console.table(municipios);
+            
+            for(i=0;i<municipios.length;i++){
+                aggciudad(municipios[i])
+            }
+        })
+        
+        
+        function aggciudad(nombreMunicipio){
+            
+                let fila=document.createElement("tr");
+                let celda=document.createElement("td");
+                celda.textContent=nombreMunicipio
+                fila.appendChild(celda)
+                ciudad.appendChild(fila)         
+         }   
+    </script>
+    <style>
+        table{
+            border: 1px solid black;
+        }
+        td,th{
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <table id="ciudad">
+        <tr>
+            
+            
+            <th>ciudades</th>
+        </tr>
+        
+    </table>
+    
+</body>
+</html>

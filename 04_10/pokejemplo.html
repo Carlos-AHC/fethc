@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Search</title>
+    <script>
+        function searchPokemon(event) {
+            event.preventDefault(); // Prevenir la recarga de la página
+
+            const pokemonName = document.querySelector('input[name="pokemon"]').value.toLowerCase();
+            const apiUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonName}/`;
+
+            fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se encontró el Pokémon');
+                }
+                return response.json();
+            })
+            .then(poke => {
+                // Limpiar cualquier imagen o información anterior
+                const existingImage = document.querySelector('img');
+                if (existingImage) {
+                    existingImage.remove();
+                }
+                const existingInfo = document.querySelector('#pokemon-info');
+                if (existingInfo) {
+                    existingInfo.remove();
+                }
+
+                const imagen = document.createElement('img');
+                imagen.setAttribute('src', poke.sprites.front_default);
+                document.body.appendChild(imagen);
+
+                const pokemonInfo = document.createElement('div');
+                pokemonInfo.setAttribute('id', 'pokemon-info');
+                pokemonInfo.innerHTML = `<h2>Nombre: ${poke.name}</h2><p>Habilidad: ${poke.abilities[0].ability.name}</p>`;
+                document.body.appendChild(pokemonInfo);
+            })
+            .catch(error => {
+                console.error(error.message);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>PokeApi</h1>
+    <form onsubmit="searchPokemon(event)">
+        <input type="text" name="pokemon" placeholder="Nombre del Pokémon" autocomplete="off">
+        <button type="submit">Buscar Pokémon</button>
+    </form>
+</body>
+</html>
